@@ -1,19 +1,23 @@
-#include "TextFile.h"
+ï»¿#include "TextFile.h"
 
 int main() 
 {
-	//std::ios_base:: ´Â ¿©·¯°¡Áö (¿Â ¿ÀÇÁ¸¦ ¼¯À» ¼ö ÀÕ´Â) ½ºÀ§Ä¡ÀÌ´Ù. 
+	//std::ios_base:: ëŠ” ì—¬ëŸ¬ê°€ì§€ (ì˜¨ ì˜¤í”„ë¥¼ ì„ì„ ìˆ˜ ì‡ëŠ”) ìŠ¤ìœ„ì¹˜ì´ë‹¤. 
 	TextFile textFile{};
 
-	textFile.openText("C:/Users/0_w0_/OneDrive/¹ÙÅÁ È­¸é/test.txt");
+	//textFile.load("C:/Users/0_w0_/OneDrive/ë°”íƒ• í™”ë©´/test.txt");
 
-	textFile.display();
+	// textFile.display();
 
-	textFile.openText("C:/Users/0_w0_/OneDrive/¹ÙÅÁ È­¸é/test.txt");
+	// textFile.load("C:/Users/0_w0_/OneDrive/ë°”íƒ• í™”ë©´/test.txt");
 
-	textFile.display();
+	// textFile.display();
 
+	textFile.write("123456789");
 
+	textFile.save("C:/Users/0_w0_/OneDrive/ë°”íƒ• í™”ë©´/saveTest.txt");
+
+	textFile.clear();
 
 	return 0;
 }

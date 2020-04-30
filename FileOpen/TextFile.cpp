@@ -1,38 +1,45 @@
-#include "TextFile.h"
+ï»¿#include "TextFile.h"
 #include <fstream>
 #include <iostream>
 
+//ìƒì„±ì 
 TextFile::TextFile()
 {
 
 }
 
+//ì†Œë©¸ì (ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠìŒ ëª…ì‹œ --noop)
 TextFile::~TextFile()
 {
 	__noop;
 }
 
-void TextFile::openText(const char* _fileName)
+//íŒŒì¼ ì´ë¦„ì„ ë°›ì•„ í…ìŠ¤íŠ¸ë¥¼ ì½ì–´ì˜¤ëŠ” í•¨ìˆ˜ 
+void TextFile::load(const char* fileName)
 {
 	std::ifstream ifs{};
 
-	ifs.open(_fileName, std::ios_base::in);
-	
+	ifs.open(fileName, std::ios_base::in);
 
-	//RAII - ¹üÀ§¸¦ ¹ş¾î³ª¸é ÀÚµ¿Á¾·á but ÇÑ¹ø´õ open ÇØÁÖ¸é ¿­¾îÁà¾ßÇÔ.
+
+	//RAII - ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ ìë™ì¢…ë£Œ but í•œë²ˆë” open í•´ì£¼ë©´ ì—´ì–´ì¤˜ì•¼í•¨.
 	if (ifs.is_open())
 	{
+		//ê¸°ì¡´ì— ìˆëŠ” ê²ƒ ì‚­ì œ
 		_data.clear();
-		//ÇÑ±ÛÀÚ¾¿ ÀĞ¾î¿È
+
+		//í•œê¸€ìì”© ì½ì–´ì˜´
 		//_ifs.get();
-		//¹è¿­ÀÌ Æ÷ÀÎÅÍ°¡ µÇ´Â¼ø°£ ÅğÈ­(decay)ÇÑ´Ù.. ¤Ğ; (¹è¿­ÀÇ ±æÀÌ¿¡ ´ëÇÑ Á¤º¸°¡ »ç¶óÁø´Ù...!)
-		//µû¶ó¼­ Æ÷ÀÎÅÍ·Î ¹ŞÀ»¶§´Â »çÀÌÁî¸¦ ¾Ë·ÁÁà¾ßÇÑ´Ù.
+
+
 		char buffer[_KbufferSize]{};
 
 		while (!ifs.eof())
-		{	
+		{
+			//ë°°ì—´ì´ í¬ì¸í„°ê°€ ë˜ëŠ”ìˆœê°„ í‡´í™”(decay)í•œë‹¤.. ã… ; (ë°°ì—´ì˜ ê¸¸ì´ì— ëŒ€í•œ ì •ë³´ê°€ ì‚¬ë¼ì§„ë‹¤...!)
+			//ë”°ë¼ì„œ í¬ì¸í„°ë¡œ ë°›ì„ë•ŒëŠ” ì‚¬ì´ì¦ˆë¥¼ ì•Œë ¤ì¤˜ì•¼í•œë‹¤.
 			ifs.getline(buffer, _KbufferSize);
-			
+
 			_data += " ";
 			_data += buffer;
 			_data += "\n";
@@ -44,4 +51,37 @@ void TextFile::openText(const char* _fileName)
 void TextFile::display()
 {
 	std::cout << _data << "\n";
+}
+
+void TextFile::save(const char* fileName)
+{
+	std::ofstream ofs{};
+
+	ofs.open(fileName,std::ios_base::out);
+
+	if (ofs.is_open() == true)
+	{
+
+		ofs.write(_data.c_str(), _data.length());
+
+		std::cout << fileName << "ì„ ì €ì¥í•˜ëŠ”ë° ì„±ê³µí–ˆìŠµë‹ˆë‹¤. \n";
+
+		ofs.close();
+	}
+	else if (ofs.is_open() == false)
+	{
+		std::cout << fileName << "ì´ ì—´ë¦¬ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. \n";
+	}
+
+
+}
+
+void TextFile::write(const char* data)
+{
+	_data += data;
+}
+
+void TextFile::clear()
+{
+	_data.clear();
 }
